@@ -1,4 +1,4 @@
-import { useTasks } from "../hooks/useTasks";
+import { useTasks } from "./useTasks";
 
 export default function TaskItem({ task }) {
   const { toggleTask, deleteTask } = useTasks();
