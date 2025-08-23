@@ -1,54 +1,135 @@
+import { useState, useMemo } from "react";
+import { Pencil, Trash2, CheckCircle, Circle } from "lucide-react";
 
-import { Trash2, Edit3 } from "lucide-react";
+/* Util: limpia caracteres raros y normaliza espacios. */
+function sanitizeText(str = "") {
+  const normalized = String(str)
+    .normalize("NFC") // normaliza acentos y tildes
+    .replace(/\s+/g, " ") // colapsa múltiples espacios
+    .trim();
+
+  // Acepta letras con acentos, ñ, números, espacios y puntuación básica
+  return normalized.replace(
+    /[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ\s.,;:!?()"'_-]/g,
+    ""
+  );
+}
 
 export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  // Texto saneado (evita símbolos raros)
+  const safeTitle = useMemo(() => sanitizeText(task?.title), [task?.title]);
+  const safeDesc = useMemo(
+    () => (task?.description ? sanitizeText(task.description) : ""),
+    [task?.description]
+  );
+
+  const createdLabel = useMemo(() => {
+    try {
+      return task?.createdAt ? new Date(task.createdAt).toLocaleString() : "-";
+    } catch {
+      return "-";
+    }
+  }, [task?.createdAt]);
+
   return (
-    <li className="flex items-center justify-between gap-3 p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm">
-      <div className="flex items-start gap-3 min-w-0 flex-1">
-        <input
-          type="checkbox"
-          checked={task.completed}
-          onChange={() => onToggle(task.id)}
+    <>
+      <li className="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow flex items-start gap-3">
+        {/* Botón para marcar completada */}
+        <button
+          onClick={onToggle}
           className="mt-1 cursor-pointer"
-        />
-        <div className="min-w-0">
-          <p
-            className={`text-sm sm:text-base break-words whitespace-normal line-clamp-2 ${
-              task.completed
-                ? "line-through text-gray-400 dark:text-gray-500"
-                : "text-gray-900 dark:text-gray-100"
-            }`}
-          >
-            {task.text}
-          </p>
-          {task.completed && (
-            <span className="text-xs text-gray-500 dark:text-gray-400">
-              Completado:{" "}
-              {new Date(task.completedAt).toLocaleDateString("es-PE", {
-                day: "2-digit",
-                month: "short",
-                year: "numeric",
-              })}
-            </span>
+          title={task.completed ? "Marcar como pendiente" : "Marcar como completada"}
+          aria-pressed={task.completed}
+        >
+          {task.completed ? (
+            <CheckCircle className="h-6 w-6 text-green-600 dark:text-green-400" />
+          ) : (
+            <Circle className="h-6 w-6 text-gray-400 dark:text-gray-600" />
           )}
+        </button>
+
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <h3
+                className={`font-semibold break-words whitespace-normal overflow-hidden text-ellipsis line-clamp-2 ${
+                  task.completed ? "line-through opacity-60" : ""
+                }`}
+                title={safeTitle} /* muestra completo al hover */
+              >
+                {safeTitle}
+              </h3>
+
+              {safeDesc && (
+                <p
+                  className={`text-sm text-gray-600 dark:text-gray-300 break-words whitespace-normal overflow-hidden text-ellipsis line-clamp-4 ${
+                    task.completed ? "line-through opacity-60" : ""
+                  }`}
+                  title={safeDesc}
+                >
+                  {safeDesc}
+                </p>
+              )}
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0">
+              {/* Botón Editar */}
+              <button
+                onClick={onEdit}
+                className="p-2 rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                title="Editar"
+                aria-label="Editar tarea"
+              >
+                <Pencil className="h-4 w-4" />
+              </button>
+
+              {/* Botón Eliminar */}
+              <button
+                onClick={() => setShowConfirm(true)}
+                className="p-2 rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-red-100 dark:hover:bg-red-800 cursor-pointer"
+                title="Eliminar"
+                aria-label="Eliminar tarea"
+              >
+                <Trash2 className="h-4 w-4 text-red-600 dark:text-red-400" />
+              </button>
+            </div>
+          </div>
+
+          <p className="mt-2 text-xs text-gray-500">Creada: {createdLabel}</p>
         </div>
-      </div>
-      <div className="flex items-center gap-2 flex-shrink-0">
-        <button
-          onClick={() => onEdit(task)}
-          className="text-blue-500 hover:text-blue-600 dark:hover:text-blue-400"
-          title="Editar"
-        >
-          ✏️
-        </button>
-        <button
-          onClick={() => onDelete(task.id)}
-          className="text-red-500 hover:text-red-600 dark:hover:text-red-400"
-          title="Eliminar"
-        >
-          🗑️
-        </button>
-      </div>
-    </li>
+      </li>
+
+      {/* Modal de confirmación */}
+      {showConfirm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 w-full max-w-sm">
+            <h3 className="text-lg font-semibold mb-4">Confirmar eliminación</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300 mb-6">
+              ¿Seguro que deseas eliminar la tarea <strong>{safeTitle}</strong>?
+            </p>
+
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowConfirm(false)}
+                className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={() => {
+                  onDelete();
+                  setShowConfirm(false);
+                }}
+                className="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 cursor-pointer"
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
