@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, CheckCircle, Circle } from "lucide-react";
 
 export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
   const [showConfirm, setShowConfirm] = useState(false);
@@ -7,15 +7,20 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
   return (
     <>
       <li className="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow flex items-start gap-3">
-        <input
-          aria-label={
+        {/* Botón para marcar completada */}
+        <button
+          onClick={onToggle}
+          className="mt-1 cursor-pointer"
+          title={
             task.completed ? "Marcar como pendiente" : "Marcar como completada"
           }
-          type="checkbox"
-          checked={task.completed}
-          onChange={onToggle}
-          className="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-700 cursor-pointer"
-        />
+        >
+          {task.completed ? (
+            <CheckCircle className="h-6 w-6 text-green-600 dark:text-green-400" />
+          ) : (
+            <Circle className="h-6 w-6 text-gray-400 dark:text-gray-600" />
+          )}
+        </button>
 
         <div className="flex-1">
           <div className="flex items-start justify-between gap-3">
@@ -65,7 +70,7 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
         </div>
       </li>
 
-      {/* 🔹 Modal de confirmación */}
+      {/* Modal de confirmación */}
       {showConfirm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 w-full max-w-sm">

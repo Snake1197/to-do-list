@@ -1,95 +1,86 @@
-# 📌 To-Do List (React + Vite + Tailwind)
+# 📝 To-Do List
 
-Aplicación de lista de tareas (CRUD) desarrollada con **React**, **Vite** y **TailwindCSS**.  
-Permite agregar, editar, marcar como completada y eliminar tareas. Las tareas se guardan en **localStorage**.
-
----
-
-## 🚀 Requisitos
-
-- [Node.js 20.19+](https://nodejs.org/) o **22.12+**  
-- npm (incluido con Node)
+Aplicación de lista de tareas desarrollada con **React + Vite + TailwindCSS**.
+Permite crear, editar, marcar como completadas y eliminar tareas con una interfaz moderna y modo oscuro.
 
 ---
 
-## ⚙️ Instalación
+## 🚀 Demo
 
-1. Clonar el repositorio o copiar la carpeta del proyecto:
-   ```bash
-   git clone <URL_DEL_REPO>
-   cd to-do-list
-   ```
-
-2. Instalar dependencias:
-   ```bash
-   npm install
-   ```
-
-3. Instalar librería `uuid` (para generar IDs únicos):
-   ```bash
-   npm install uuid
-   ```
+> Puedes añadir una captura de pantalla aquí
+> `![screenshot](public/show.png)`
 
 ---
 
-## ▶️ Uso
+## ✨ Features
 
-Ejecutar en modo desarrollo:
+- ➕ **Agregar tareas** mediante un modal
+- ✏️ **Editar tareas** en modal con título dinámico
+- ✅ **Marcar tareas como completadas** con icono de check
+- 🗑️ **Eliminar tareas** con confirmación en popup (no nativo)
+- 🌙 **Modo oscuro** activable con switch
+- 📱 Diseño responsive con TailwindCSS
+
+---
+
+## 🛠️ Tecnologías
+
+- [React](https://react.dev/)
+- [Vite](https://vitejs.dev/)
+- [TailwindCSS](https://tailwindcss.com/)
+- [Lucide React](https://lucide.dev/) (iconos modernos)
+
+---
+
+## 📦 Instalación y ejecución
+
+Clona el repositorio:
+
+```bash
+git clone https://github.com/Snake1197/to-do-list.git
+cd to-do-list
+```
+
+Instala dependencias:
+
+```bash
+npm install
+```
+
+Ejecuta el entorno de desarrollo:
+
 ```bash
 npm run dev
 ```
 
-Abrir la URL que muestre la terminal (ejemplo: `http://localhost:5173`).
-
----
-
-## 🛠️ Construcción para producción
+Compila para producción:
 
 ```bash
 npm run build
 ```
 
-Archivos generados en la carpeta `dist/`.
-
 ---
 
-## 📂 Estructura principal
+## 📂 Estructura del proyecto
 
 ```
-src/
- ├─ App.jsx                # Lógica principal y estado global
- ├─ main.jsx               # Punto de entrada
- ├─ index.css              # Configuración de Tailwind + estilos globales
- └─ components/
-     ├─ TaskForm.jsx       # Formulario de crear/editar tareas
-     ├─ TaskList.jsx       # Listado de tareas
-     └─ TaskItem.jsx       # Componente individual de tarea
-tailwind.config.js         # Configuración de Tailwind
-postcss.config.js          # Configuración de PostCSS
+to-do-list/
+├── public/               # Recursos estáticos (favicon, imágenes)
+├── src/
+│   ├── components/       # Componentes reutilizables
+│   │   ├── TaskList.jsx
+│   │   ├── TaskItem.jsx
+│   │   └── TaskForm.jsx
+│   ├── App.jsx           # Componente principal
+│   ├── index.css         # Estilos globales + Tailwind
+│   └── main.jsx          # Punto de entrada
+├── package.json
+├── tailwind.config.js
+└── README.md
 ```
 
 ---
 
-## ✨ Funcionalidades
+## 📌 Autor
 
-- ✅ Agregar nuevas tareas con título y descripción  
-- ✅ Editar tareas existentes  
-- ✅ Marcar tareas como completadas o pendientes  
-- ✅ Eliminar tareas  
-- ✅ Guardado automático en `localStorage`  
-- ✅ Interfaz responsive con **TailwindCSS**  
-
----
-
-## 📦 Dependencias principales
-
-- **React 18**  
-- **Vite** (bundler rápido)  
-- **TailwindCSS** (estilos)  
-- **uuid** (IDs únicos para las tareas)
-
----
-
-## 👨‍💻 Autor
-
-Proyecto de práctica desarrollado en **React** con Vite + Tailwind.
+Creado por [Snake1197](https://github.com/Snake1197) 🐍
