@@ -1,4 +1,4 @@
-import ToggleTheme from "./components/ToggleTheme.jsx";
+import ToggleTheme from "./ToggleTheme.jsx";
 
 export default function Header({ pendingCount, total, darkMode, toggleTheme }) {
   return (
