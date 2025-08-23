@@ -5,9 +5,9 @@ import { Pencil, Trash2, CheckCircle, Circle } from "lucide-react";
    Ajusta la lista de símbolos permitidos según tu caso. */
 function sanitizeText(str = "") {
   const normalized = String(str).normalize("NFC").replace(/\s+/g, " ").trim();
-  // Letras, números, espacio y puntuación básica en ES.
+  // Letras ES (incluye ñ y vocales acentuadas), números, espacio y puntuación básica
   return normalized.replace(
-    /[^\p{L}\p{N}\s\.\,\;\:\!\?\(\)\"\'\-\_]/gu,
+    /[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s.,;:!?()"'_-]/g,
     ""
   );
 }
