@@ -4,8 +4,8 @@ import { Pencil, Trash2, CheckCircle, Circle } from "lucide-react";
 /* Util: limpia caracteres raros y normaliza espacios. */
 function sanitizeText(str = "") {
   const normalized = String(str)
-    .normalize("NFC") // normaliza acentos y tildes
-    .replace(/\s+/g, " ") // colapsa múltiples espacios
+    .normalize("NFC")       // normaliza acentos y tildes
+    .replace(/\s+/g, " ")   // colapsa múltiples espacios
     .trim();
 
   // Acepta letras con acentos, ñ, números, espacios y puntuación básica
@@ -24,6 +24,20 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
     () => (task?.description ? sanitizeText(task.description) : ""),
     [task?.description]
   );
+
+  // Clamp para cortar a 2 líneas el título y 4 líneas la descripción (sin plugin)
+  const clampTitle = {
+    display: "-webkit-box",
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: "vertical",
+    overflow: "hidden",
+  };
+  const clampDesc = {
+    display: "-webkit-box",
+    WebkitLineClamp: 4,
+    WebkitBoxOrient: "vertical",
+    overflow: "hidden",
+  };
 
   const createdLabel = useMemo(() => {
     try {
@@ -50,13 +64,16 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
           )}
         </button>
 
+        {/* Contenido */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0">
+          <div className="flex items-start gap-3">
+            {/* Texto (ocupa lo flexible) */}
+            <div className="grow min-w-0">
               <h3
-                className={`font-semibold break-words whitespace-normal overflow-hidden text-ellipsis line-clamp-2 ${
+                className={`font-semibold whitespace-normal break-words overflow-hidden ${
                   task.completed ? "line-through opacity-60" : ""
                 }`}
+                style={clampTitle}
                 title={safeTitle} /* muestra completo al hover */
               >
                 {safeTitle}
@@ -64,9 +81,10 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
 
               {safeDesc && (
                 <p
-                  className={`text-sm text-gray-600 dark:text-gray-300 break-words whitespace-normal overflow-hidden text-ellipsis line-clamp-4 ${
+                  className={`text-sm text-gray-600 dark:text-gray-300 whitespace-normal break-words overflow-hidden ${
                     task.completed ? "line-through opacity-60" : ""
                   }`}
+                  style={clampDesc}
                   title={safeDesc}
                 >
                   {safeDesc}
@@ -74,7 +92,8 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
               )}
             </div>
 
-            <div className="flex items-center gap-2 shrink-0">
+            {/* Acciones (no se encogen) */}
+            <div className="flex items-center gap-2 flex-none">
               {/* Botón Editar */}
               <button
                 onClick={onEdit}
