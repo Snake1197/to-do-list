@@ -25,9 +25,12 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
     [task?.description]
   );
 
-  // Estilos para cortar texto
+
+// Estilos para cortar texto
   const clampTitle = {
-    whiteSpace: "nowrap",
+    display: "-webkit-box",
+    WebkitLineClamp: 1, // máximo 1 línea
+    WebkitBoxOrient: "vertical",
     overflow: "hidden",
     textOverflow: "ellipsis",
   };
@@ -69,26 +72,27 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
             {/* Texto (ocupa lo flexible) */}
             <div className="grow min-w-0">
               <h3
-                className={`font-semibold ${
-                  task.completed ? "line-through opacity-60" : ""
-                }`}
-                style={clampTitle}
-                title={safeTitle} /* muestra completo al hover */
-              >
-                {safeTitle}
-              </h3>
+  className={`font-semibold break-words ${
+    task.completed ? "line-through opacity-60" : ""
+  }`}
+  style={clampTitle}
+  title={safeTitle}
+>
+  {safeTitle}
+</h3>
 
-              {safeDesc && (
-                <p
-                  className={`text-sm text-gray-600 dark:text-gray-300 ${
-                    task.completed ? "line-through opacity-60" : ""
-                  }`}
-                  style={clampDesc}
-                  title={safeDesc}
-                >
-                  {safeDesc}
-                </p>
-              )}
+{safeDesc && (
+  <p
+    className={`text-sm text-gray-600 dark:text-gray-300 break-words ${
+      task.completed ? "line-through opacity-60" : ""
+    }`}
+    style={clampDesc}
+    title={safeDesc}
+  >
+    {safeDesc}
+  </p>
+)}
+             
             </div>
 
             {/* Acciones (no se encogen) */}
