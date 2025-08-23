@@ -4,8 +4,8 @@ import { Pencil, Trash2, CheckCircle, Circle } from "lucide-react";
 /* Util: limpia caracteres raros y normaliza espacios. */
 function sanitizeText(str = "") {
   const normalized = String(str)
-    .normalize("NFC")       // normaliza acentos y tildes
-    .replace(/\s+/g, " ")   // colapsa múltiples espacios
+    .normalize("NFC") // normaliza acentos y tildes
+    .replace(/\s+/g, " ") // colapsa múltiples espacios
     .trim();
 
   // Acepta letras con acentos, ñ, números, espacios y puntuación básica
@@ -25,16 +25,15 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
     [task?.description]
   );
 
-  // Clamp para cortar a 2 líneas el título y 4 líneas la descripción (sin plugin)
+  // Estilos para cortar texto
   const clampTitle = {
-    display: "-webkit-box",
-    WebkitLineClamp: 2,
-    WebkitBoxOrient: "vertical",
+    whiteSpace: "nowrap",
     overflow: "hidden",
+    textOverflow: "ellipsis",
   };
   const clampDesc = {
     display: "-webkit-box",
-    WebkitLineClamp: 4,
+    WebkitLineClamp: 2, // máximo 2 líneas
     WebkitBoxOrient: "vertical",
     overflow: "hidden",
   };
@@ -49,11 +48,11 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
 
   return (
     <>
-      <li className="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow flex items-start gap-3">
+      <li className="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow flex items-start gap-3 w-full">
         {/* Botón para marcar completada */}
         <button
           onClick={onToggle}
-          className="mt-1 cursor-pointer"
+          className="mt-1 cursor-pointer shrink-0"
           title={task.completed ? "Marcar como pendiente" : "Marcar como completada"}
           aria-pressed={task.completed}
         >
@@ -70,7 +69,7 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
             {/* Texto (ocupa lo flexible) */}
             <div className="grow min-w-0">
               <h3
-                className={`font-semibold whitespace-normal break-words overflow-hidden ${
+                className={`font-semibold ${
                   task.completed ? "line-through opacity-60" : ""
                 }`}
                 style={clampTitle}
@@ -81,7 +80,7 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
 
               {safeDesc && (
                 <p
-                  className={`text-sm text-gray-600 dark:text-gray-300 whitespace-normal break-words overflow-hidden ${
+                  className={`text-sm text-gray-600 dark:text-gray-300 ${
                     task.completed ? "line-through opacity-60" : ""
                   }`}
                   style={clampDesc}
@@ -93,7 +92,7 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
             </div>
 
             {/* Acciones (no se encogen) */}
-            <div className="flex items-center gap-2 flex-none">
+            <div className="flex items-center gap-2 flex-none shrink-0">
               {/* Botón Editar */}
               <button
                 onClick={onEdit}
