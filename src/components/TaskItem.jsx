@@ -47,7 +47,7 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
   }, [task?.createdAt]);
 
   return (
-   
+   <>
       <li className="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow flex items-start gap-3 w-full">
         {/* Botón para marcar completada */}
         <button
@@ -148,6 +148,6 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
           </div>
         </div>
       )}
-    
+    </>
   );
 }
