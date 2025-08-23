@@ -10,7 +10,7 @@ export default function TaskList({ tasks, onToggle, onEdit, onDelete }) {
   }
 
   return (
-    <ul className="dark:bg-white grid gap-3 wd-full">
+    <ul className="grid gap-3 wd-full">
       {tasks.map((t) => (
         <TaskItem
           key={t.id}
