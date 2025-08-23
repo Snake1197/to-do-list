@@ -51,78 +51,73 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
 
   return (
    <>
-      <li className="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow flex items-start gap-3 w-full">
-        {/* Botón para marcar completada */}
-        <button
-          onClick={onToggle}
-          className="mt-1 cursor-pointer shrink-0"
-          title={task.completed ? "Marcar como pendiente" : "Marcar como completada"}
-          aria-pressed={task.completed}
+      <li className="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow flex items-start gap-3 w-full max-w-full overflow-hidden">
+  {/* Botón para marcar completada */}
+  <button
+    onClick={onToggle}
+    className="mt-1 cursor-pointer shrink-0"
+    title={task.completed ? "Marcar como pendiente" : "Marcar como completada"}
+    aria-pressed={task.completed}
+  >
+    {task.completed ? (
+      <CheckCircle className="h-6 w-6 text-green-600 dark:text-green-400" />
+    ) : (
+      <Circle className="h-6 w-6 text-gray-400 dark:text-gray-600" />
+    )}
+  </button>
+
+  {/* Contenido */}
+  <div className="flex-1 w-full min-w-0">
+    <div className="flex items-start gap-3">
+      {/* Texto */}
+      <div className="grow min-w-0">
+        <h3
+          className={`font-semibold w-full break-words line-clamp-1 ${
+            task.completed ? "line-through opacity-60" : ""
+          }`}
+          title={safeTitle}
         >
-          {task.completed ? (
-            <CheckCircle className="h-6 w-6 text-green-600 dark:text-green-400" />
-          ) : (
-            <Circle className="h-6 w-6 text-gray-400 dark:text-gray-600" />
-          )}
+          {safeTitle}
+        </h3>
+
+        {safeDesc && (
+          <p
+            className={`text-sm text-gray-600 dark:text-gray-300 break-words line-clamp-2 ${
+              task.completed ? "line-through opacity-60" : ""
+            }`}
+            title={safeDesc}
+          >
+            {safeDesc}
+          </p>
+        )}
+      </div>
+
+      {/* Acciones */}
+      <div className="flex items-center gap-2 flex-none shrink-0">
+        <button
+          onClick={onEdit}
+          className="p-2 rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+          title="Editar"
+          aria-label="Editar tarea"
+        >
+          <Pencil className="h-4 w-4" />
         </button>
 
-        {/* Contenido */}
-        <div className="flex-1 w-full">
-          <div className="flex items-start gap-3">
-            {/* Texto (ocupa lo flexible) */}
-            <div className="grow min-w-0">
-              <h3
-  className={`font-semibold w-full break-words overflow-hidden text-ellipsis whitespace-nowrap ${
-    task.completed ? "line-through opacity-60" : ""
-  }`}
-  title={safeTitle}
->
-  {safeTitle}
-</h3>
+        <button
+          onClick={() => setShowConfirm(true)}
+          className="p-2 rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-red-100 dark:hover:bg-red-800 cursor-pointer"
+          title="Eliminar"
+          aria-label="Eliminar tarea"
+        >
+          <Trash2 className="h-4 w-4 text-red-600 dark:text-red-400" />
+        </button>
+      </div>
+    </div>
 
+    <p className="mt-2 text-xs text-gray-500 truncate">Creada: {createdLabel}</p>
+  </div>
+</li>
 
-{safeDesc && (
-  <p
-  className={`text-sm text-gray-600 dark:text-gray-300 break-words overflow-hidden text-ellipsis ${
-    task.completed ? "line-through opacity-60" : ""
-  }`}
-  style={clampDesc}
-  title={safeDesc}
->
-  {safeDesc}
-</p>
-
-)}
-             
-            </div>
-
-            {/* Acciones (no se encogen) */}
-            <div className="flex items-center gap-2 flex-none shrink-0">
-              {/* Botón Editar */}
-              <button
-                onClick={onEdit}
-                className="p-2 rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                title="Editar"
-                aria-label="Editar tarea"
-              >
-                <Pencil className="h-4 w-4" />
-              </button>
-
-              {/* Botón Eliminar */}
-              <button
-                onClick={() => setShowConfirm(true)}
-                className="p-2 rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-red-100 dark:hover:bg-red-800 cursor-pointer"
-                title="Eliminar"
-                aria-label="Eliminar tarea"
-              >
-                <Trash2 className="h-4 w-4 text-red-600 dark:text-red-400" />
-              </button>
-            </div>
-          </div>
-
-          <p className="mt-2 text-xs text-gray-500">Creada: {createdLabel}</p>
-        </div>
-      </li>
 
       {/* Modal de confirmación */}
       {showConfirm && (
