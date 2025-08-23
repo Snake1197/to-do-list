@@ -1,85 +1,84 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-export default function TaskForm({
-  initialTask,
-  onCreate,
-  onUpdate,
-  onCancel,
-}) {
-  const isEditing = Boolean(initialTask);
-  const [title, setTitle] = useState(initialTask?.title ?? "");
-  const [description, setDescription] = useState(
-    initialTask?.description ?? ""
-  );
+export default function TaskForm({ initialTask, onCreate, onUpdate, onCancel }) {
+  const [title, setTitle] = useState(initialTask?.title || "");
+  const [description, setDescription] = useState(initialTask?.description || "");
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    setError("");
-  }, [title, description]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validaciones
     if (!title.trim()) {
       setError("El título es obligatorio.");
       return;
     }
 
-    if (isEditing) {
-      onUpdate({
-        ...initialTask,
-        title: title.trim(),
-        description: description.trim(),
-      });
+    if (title.length > 100) {
+      setError("El título no puede superar los 100 caracteres.");
+      return;
+    }
+
+    if (description.length > 500) {
+      setError("La descripción no puede superar los 500 caracteres.");
+      return;
+    }
+
+    const newTask = {
+      ...initialTask,
+      title: title.trim(),
+      description: description.trim(),
+      createdAt: initialTask?.createdAt || new Date().toISOString(),
+      completed: initialTask?.completed || false,
+      id: initialTask?.id || crypto.randomUUID(),
+    };
+
+    if (initialTask) {
+      onUpdate(newTask);
     } else {
-      onCreate({
-        id: crypto.randomUUID(),
-        title: title.trim(),
-        description: description.trim(),
-        completed: false,
-        createdAt: new Date().toISOString(),
-      });
-      setTitle("");
-      setDescription("");
+      onCreate(newTask);
     }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow"
-    >
-      <div className="grid gap-3">
-        <input
-          type="text"
-          placeholder="Título de la tarea *"
-          className="w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2 outline-none focus:ring"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <textarea
-          placeholder="Descripción (opcional)"
-          className="w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2 outline-none focus:ring min-h-[96px]"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        {error && <p className="text-sm text-red-600">{error}</p>}
-        <div className="flex items-center gap-2">
-          <button
-            type="submit"
-            className="rounded-xl px-4 py-2 font-medium bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900 cursor-pointer"
-          >
-            {isEditing ? "Guardar cambios" : "Agregar tarea"}
-          </button>
-          {isEditing && (
-            <button
-              type="button"
-              onClick={onCancel}
-              className="rounded-xl px-4 py-2 font-medium border border-gray-300 dark:border-gray-700 cursor-pointer"
-            >
-              Cancelar
-            </button>
-          )}
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {error && (
+        <div className="p-2 bg-red-100 text-red-700 rounded-lg text-sm">
+          {error}
         </div>
+      )}
+
+      <input
+        type="text"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="Título de la tarea"
+        className="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900"
+        required
+      />
+
+      <textarea
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        placeholder="Descripción (opcional)"
+        className="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900"
+        rows="4"
+      />
+
+      <div className="flex justify-end gap-3">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+        >
+          {initialTask ? "Actualizar" : "Crear"}
+        </button>
       </div>
     </form>
   );
