@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+
 import { Trash2, Edit3 } from "lucide-react";
 
 export default function TaskItem({ task, onToggle, onDelete, onEdit }) {
