@@ -67,12 +67,12 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
         </button>
 
         {/* Contenido */}
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 w-full">
           <div className="flex items-start gap-3">
             {/* Texto (ocupa lo flexible) */}
             <div className="grow min-w-0">
               <h3
-  className={`font-semibold break-words ${
+  className={`font-semibold flex w-full break-words ${
     task.completed ? "line-through opacity-60" : ""
   }`}
   style={clampTitle}
