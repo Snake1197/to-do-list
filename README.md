@@ -7,8 +7,7 @@ Permite crear, editar, marcar como completadas y eliminar tareas con una interfa
 
 ## 🚀 Demo
 
-> Puedes añadir una captura de pantalla aquí
-> `![screenshot](public/show.png)`
+![screenshot](public/show.png)
 
 ---
 
