@@ -1,61 +1,54 @@
 
 import { Trash2, Edit3 } from "lucide-react";
 
-export default function TaskItem({ task, onToggle, onDelete, onEdit }) {
-  const safeTitle = task.title || "";
-  const safeDesc = task.description || "";
-
+export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
   return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 10 }}
-      className="p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 flex flex-col gap-2 overflow-hidden"
-    >
-      <div className="flex items-start gap-3">
+    <li className="flex items-center justify-between gap-3 p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm">
+      <div className="flex items-start gap-3 min-w-0 flex-1">
         <input
           type="checkbox"
           checked={task.completed}
           onChange={() => onToggle(task.id)}
-          className="mt-1 w-5 h-5 cursor-pointer accent-blue-500"
+          className="mt-1 cursor-pointer"
         />
-        <div className="flex-1 min-w-0">
-          <h3
-            className={`font-semibold line-clamp-2 break-words whitespace-normal ${
-              task.completed ? "line-through opacity-60" : ""
-            }`}
-            title={safeTitle}
-          >
-            {safeTitle}
-          </h3>
+        <div className="min-w-0">
           <p
-            className={`text-sm text-gray-600 dark:text-gray-300 line-clamp-4 break-words whitespace-normal ${
-              task.completed ? "line-through opacity-60" : ""
+            className={`text-sm sm:text-base break-words whitespace-normal line-clamp-2 ${
+              task.completed
+                ? "line-through text-gray-400 dark:text-gray-500"
+                : "text-gray-900 dark:text-gray-100"
             }`}
-            title={safeDesc}
           >
-            {safeDesc}
+            {task.text}
           </p>
+          {task.completed && (
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              Completado:{" "}
+              {new Date(task.completedAt).toLocaleDateString("es-PE", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              })}
+            </span>
+          )}
         </div>
       </div>
-
-      <div className="flex justify-end gap-2">
+      <div className="flex items-center gap-2 flex-shrink-0">
         <button
           onClick={() => onEdit(task)}
-          className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+          className="text-blue-500 hover:text-blue-600 dark:hover:text-blue-400"
           title="Editar"
         >
-          <Edit3 size={18} />
+          ✏️
         </button>
         <button
           onClick={() => onDelete(task.id)}
-          className="p-2 rounded-full hover:bg-red-100 dark:hover:bg-red-700/40"
+          className="text-red-500 hover:text-red-600 dark:hover:text-red-400"
           title="Eliminar"
         >
-          <Trash2 size={18} className="text-red-500" />
+          🗑️
         </button>
       </div>
-    </motion.div>
+    </li>
   );
 }
