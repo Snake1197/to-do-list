@@ -72,25 +72,26 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
             {/* Texto (ocupa lo flexible) */}
             <div className="grow min-w-0">
               <h3
-  className={`font-semibold flex w-full break-words ${
+  className={`font-semibold w-full break-words overflow-hidden text-ellipsis whitespace-nowrap ${
     task.completed ? "line-through opacity-60" : ""
   }`}
-  style={clampTitle}
   title={safeTitle}
 >
   {safeTitle}
 </h3>
 
+
 {safeDesc && (
   <p
-    className={`text-sm text-gray-600 dark:text-gray-300 break-words ${
-      task.completed ? "line-through opacity-60" : ""
-    }`}
-    style={clampDesc}
-    title={safeDesc}
-  >
-    {safeDesc}
-  </p>
+  className={`text-sm text-gray-600 dark:text-gray-300 break-words overflow-hidden text-ellipsis ${
+    task.completed ? "line-through opacity-60" : ""
+  }`}
+  style={clampDesc}
+  title={safeDesc}
+>
+  {safeDesc}
+</p>
+
 )}
              
             </div>
