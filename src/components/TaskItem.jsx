@@ -150,7 +150,7 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
       )}
     </>
   );
-}*/
+}//*/
 import { useState, useMemo } from "react";
 import { Pencil, Trash2, CheckCircle, Circle } from "lucide-react";
 
