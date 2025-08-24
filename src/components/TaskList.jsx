@@ -22,8 +22,7 @@ export default function TaskList({ tasks, onToggle, onEdit, onDelete }) {
       ))}
     </ul>
   );
-}
-*/
+}*/
 import TaskItem from "./TaskItem.jsx";
 
 export default function TaskList({ tasks, onToggle, onEdit, onDelete, onView }) {
@@ -47,6 +46,5 @@ export default function TaskList({ tasks, onToggle, onEdit, onDelete, onView }) 
           onView={() => onView(t)}   {/* 👈 nuevo handler */}
         />
       ))}
-    </ul>
-  );
+    </ul>);
 }
