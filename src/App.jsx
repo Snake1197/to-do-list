@@ -78,12 +78,13 @@ import TaskForm from "./components/TaskForm.jsx";
 import Button from "./components/Button.jsx";
 import Modal from "./components/Modal.jsx";
 import FilterButtons from "./components/FilterButtons.jsx";
-import { Plus } from "lucide-react"; // 👈 importas el ícono
+import { Plus } from "lucide-react";
 
 export default function App() {
   const { tasks, addTask, updateTask, toggleComplete, deleteTask, pendingCount } = useTasks();
   const [darkMode, setDarkMode] = useDarkMode();
   const [editing, setEditing] = useState(null);
+  const [viewing, setViewing] = useState(null); // 👈 para ver detalle
   const [showForm, setShowForm] = useState(false);
   const [filter, setFilter] = useState("pending");
 
@@ -113,11 +114,9 @@ export default function App() {
         toggleTheme={() => setDarkMode(!darkMode)}
       />
 
-      {/* Controles de filtros y botón de escritorio */}
       <div className="mb-6 flex items-center justify-between">
         <FilterButtons value={filter} onChange={setFilter} />
 
-        {/* Solo en escritorio */}
         <Button
           onClick={() => setShowForm(true)}
           className="hidden md:inline-flex bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900"
@@ -131,6 +130,7 @@ export default function App() {
         onToggle={toggleComplete}
         onEdit={startEdit}
         onDelete={deleteTask}
+        onView={setViewing} // 👈 le pasamos el handler
       />
 
       {/* Botón flotante en móviles */}
@@ -142,6 +142,7 @@ export default function App() {
         <Plus className="w-6 h-6" />
       </button>
 
+      {/* Modal de creación/edición */}
       {showForm && (
         <Modal
           title={editing ? "Editar tarea" : "Nueva tarea"}
@@ -154,6 +155,21 @@ export default function App() {
             onUpdate={(t) => { updateTask(t); setShowForm(false); setEditing(null); }}
             onCancel={cancelEdit}
           />
+        </Modal>
+      )}
+
+      {/* Modal de visualización */}
+      {viewing && (
+        <Modal title="Detalle de tarea" onClose={() => setViewing(null)}>
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">{viewing.title}</h2>
+            {viewing.description && (
+              <p className="text-gray-700 dark:text-gray-300">{viewing.description}</p>
+            )}
+            <p className="text-sm text-gray-500">
+              Estado: {viewing.completed ? "✅ Completada" : "⏳ Pendiente"}
+            </p>
+          </div>
         </Modal>
       )}
     </Layout>
