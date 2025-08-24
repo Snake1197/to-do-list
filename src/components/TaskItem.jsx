@@ -1,4 +1,5 @@
-/*import { useState, useMemo } from "react";
+/*
+import { useState, useMemo } from "react";
 import { Pencil, Trash2, CheckCircle, Circle } from "lucide-react";
 
 /* Util: limpia caracteres raros y normaliza espacios. */
@@ -150,7 +151,8 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
       )}
     </>
   );
-}//*/
+}
+*/
 import { useState, useMemo } from "react";
 import { Pencil, Trash2, CheckCircle, Circle } from "lucide-react";
 
