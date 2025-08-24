@@ -43,7 +43,7 @@ export default function TaskList({ tasks, onToggle, onEdit, onDelete, onView }) 
           onToggle={() => onToggle(t.id)}
           onEdit={() => onEdit(t)}
           onDelete={() => onDelete(t.id)}
-          onView={() => onView(t)}   {/* 👈 nuevo handler */}
+          onView={() => onView(t)} 
         />
       ))}
     </ul>);
