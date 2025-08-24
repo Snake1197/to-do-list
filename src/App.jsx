@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDarkMode } from "./hooks/useDarkMode";
-import { useTasks } from "./components/useTasks";
+import { useTasks } from "./hooks/useTasks";
 
 import Layout from "./components/Layout.jsx";
 import Header from "./components/Header.jsx";
