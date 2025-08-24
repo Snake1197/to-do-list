@@ -23,19 +23,42 @@ export default function App() {
 
   const filteredTasks = useTaskFilter(tasks, filter);
 
+  // 🔹 Funciones externas para claridad y buenas prácticas
+  function handleToggleTheme() {
+    setDarkMode(!darkMode);
+  }
+
+  function handleAddClick() {
+    setShowForm(true);
+  }
+
+  function handleEditTask(task) {
+    setEditing(task);
+    setShowForm(true);
+  }
+
+  function handleCancelForm() {
+    setEditing(null);
+    setShowForm(false);
+  }
+
+  function handleCloseView() {
+    setViewing(null);
+  }
+
   return (
     <Layout>
       <Header
         pendingCount={pendingCount}
         total={tasks.length}
         darkMode={darkMode}
-        toggleTheme={() => setDarkMode(!darkMode)}
+        toggleTheme={handleToggleTheme}
       />
 
       <div className="mb-6 flex items-center justify-between">
         <FilterButtons value={filter} onChange={setFilter} />
         <Button
-          onClick={() => setShowForm(true)}
+          onClick={handleAddClick}
           className="hidden md:inline-flex bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900"
         >
           Agregar tarea
@@ -45,14 +68,14 @@ export default function App() {
       <TaskList
         tasks={filteredTasks}
         onToggle={toggleComplete}
-        onEdit={(task) => { setEditing(task); setShowForm(true); }}
+        onEdit={handleEditTask}
         onDelete={deleteTask}
         onView={setViewing}
       />
 
       {/* Botón flotante móvil */}
       <button
-        onClick={() => setShowForm(true)}
+        onClick={handleAddClick}
         className="md:hidden fixed bottom-6 right-6 w-14 h-14 rounded-full bg-green-600 text-white shadow-lg flex items-center justify-center text-2xl hover:bg-green-700 cursor-pointer"
         title="Agregar tarea"
       >
@@ -64,12 +87,12 @@ export default function App() {
           editing={editing}
           onCreate={addTask}
           onUpdate={updateTask}
-          onCancel={() => { setEditing(null); setShowForm(false); }}
+          onCancel={handleCancelForm}
         />
       )}
 
       {viewing && (
-        <ViewModal task={viewing} onClose={() => setViewing(null)} />
+        <ViewModal task={viewing} onClose={handleCloseView} />
       )}
     </Layout>
   );
