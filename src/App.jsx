@@ -68,7 +68,7 @@ export default function App() {
           onClick={handleAddClick}
           variant="primary"
           size="md"
-          className="hidden md:inline-flex"
+          className="hidden sm:hidden md:inline-flex"
         >
           Agregar tarea
         </Button>

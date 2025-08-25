@@ -30,7 +30,7 @@ export default function Button({
       onClick={onClick}
       disabled={disabled}
       aria-disabled={disabled}
-      className={`inline-flex items-center justify-center gap-2 rounded-lg font-medium shadow-sm transition-all duration-200 ease-in-out
+      className={`items-center justify-center gap-2 rounded-lg font-medium shadow-sm transition-all duration-200 ease-in-out
         ${
           disabled
             ? "opacity-50 cursor-not-allowed"
