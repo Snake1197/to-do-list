@@ -9,10 +9,6 @@ Permite crear, editar, completar y eliminar tareas con una interfaz responsiva, 
 
 A continuación se muestran algunas capturas de la aplicación en funcionamiento:
 
-## 🚀 Demo
-
-A continuación se muestran algunas capturas de la aplicación en funcionamiento:
-
 - 🖥️ Vista principal con tareas pendientes y filtros activos
   ![Vista principal](public/main-view.png)
 
@@ -71,8 +67,6 @@ npm run dev
 npm run build
 ```
 
-```
-
 ---
 
 ## 📂 Estructura del proyecto
@@ -116,4 +110,7 @@ src/
 ## 📌 Autor
 
 Desarrollado por [Snake1197](https://github.com/Snake1197) 🐍
+
+```
+
 ```
