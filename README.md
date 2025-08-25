@@ -16,6 +16,7 @@ A continuación se muestran algunas capturas de la aplicación en funcionamiento
   ![Modo oscuro](public/dark-mode.png)
 
 - 📱 Vista móvil con botón flotante de “Agregar tarea”
+
   ![Vista móvil](public/mobile-view.png)
 
 - 📝 Modal de edición con campos dinámicos
@@ -113,10 +114,4 @@ src/
 
 Desarrollado por [Snake1197](https://github.com/Snake1197) 🐍
 
-```
-
-```
-
-```
-
-```
+---
