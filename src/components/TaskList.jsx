@@ -1,6 +1,6 @@
 import TaskItem from "./TaskItem.jsx";
 
-export default function TaskList({ tasks, onToggle, onEdit, onDelete }) {
+export default function TaskList({ tasks, onToggle, onEdit, onDelete, onView }) {
   if (!tasks.length) {
     return (
       <p className="text-sm text-gray-500 text-center">
@@ -10,7 +10,7 @@ export default function TaskList({ tasks, onToggle, onEdit, onDelete }) {
   }
 
   return (
-    <ul className="grid gap-3">
+    <ul className="grid gap-3 max-w-full overflow-hidden">
       {tasks.map((t) => (
         <TaskItem
           key={t.id}
@@ -18,8 +18,8 @@ export default function TaskList({ tasks, onToggle, onEdit, onDelete }) {
           onToggle={() => onToggle(t.id)}
           onEdit={() => onEdit(t)}
           onDelete={() => onDelete(t.id)}
+          onView={() => onView(t)} 
         />
       ))}
-    </ul>
-  );
+    </ul>);
 }
