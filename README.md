@@ -71,6 +71,7 @@ npm run build
 
 ## 📂 Estructura del proyecto
 
+```
 src/
 ├── assets/ # Recursos estáticos
 ├── components/ # Componentes reutilizables
@@ -93,6 +94,7 @@ src/
 ├── App.jsx # Componente principal
 ├── index.css # Estilos globales + Tailwind
 └── main.js # Punto de entrada
+```
 
 ---
 
@@ -110,6 +112,10 @@ src/
 ## 📌 Autor
 
 Desarrollado por [Snake1197](https://github.com/Snake1197) 🐍
+
+```
+
+```
 
 ```
 
