@@ -1,33 +1,33 @@
 import { useState } from "react";
 
 const TITLE_MAX = 100;
-const DESC_MAX  = 500;
+const DESC_MAX = 500;
 
-// Cuenta por puntos de código (evita errores con emojis/acentos)
+// Recorta por puntos de código (soporta emojis y caracteres especiales)
 const clip = (str, max) => Array.from(str).slice(0, max).join("");
 
-export default function TaskForm({ initialTask, onCreate, onUpdate, onCancel }) {
+export default function TaskForm({ initialTask, onSubmit, onCancel }) {
   const [title, setTitle] = useState(initialTask?.title ?? "");
-  const [description, setDescription] = useState(initialTask?.description ?? "");
+  const [description, setDescription] = useState(
+    initialTask?.description ?? ""
+  );
   const [error, setError] = useState("");
 
-  const onTitleChange = (e) => {
-    // Recorta al vuelo, también cuando pegan texto largo
-    setTitle(clip(e.target.value, TITLE_MAX));
-  };
+  const isEditing = Boolean(initialTask);
+  const actionLabel = isEditing ? "Actualizar" : "Crear";
 
-  const onDescChange = (e) => {
+  const handleTitleChange = (e) => setTitle(clip(e.target.value, TITLE_MAX));
+  const handleDescChange = (e) =>
     setDescription(clip(e.target.value, DESC_MAX));
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
 
-    const t = clip(title.trim(), TITLE_MAX);
-    const d = clip(description.trim(), DESC_MAX);
+    const trimmedTitle = clip(title.trim(), TITLE_MAX);
+    const trimmedDesc = clip(description.trim(), DESC_MAX);
 
-    if (!t) {
+    if (!trimmedTitle) {
       setError("El título es obligatorio.");
       return;
     }
@@ -35,29 +35,41 @@ export default function TaskForm({ initialTask, onCreate, onUpdate, onCancel }) 
     const payload = {
       ...initialTask,
       id: initialTask?.id ?? crypto.randomUUID(),
-      title: t,
-      description: d,
+      title: trimmedTitle,
+      description: trimmedDesc,
       createdAt: initialTask?.createdAt ?? new Date().toISOString(),
       completed: initialTask?.completed ?? false,
     };
 
-    initialTask ? onUpdate(payload) : onCreate(payload);
+    onSubmit(payload);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4"
+      aria-label={`${actionLabel} tarea`}
+    >
       {error && (
-        <div className="p-2 bg-red-100 text-red-700 rounded-lg text-sm">{error}</div>
+        <div
+          role="alert"
+          className="p-2 bg-red-100 text-red-700 rounded-lg text-sm"
+        >
+          {error}
+        </div>
       )}
 
-      {/* Título */}
+      {/* Campo: Título */}
       <div>
-        <label className="block text-sm mb-1">Título</label>
+        <label htmlFor="task-title" className="block text-sm mb-1">
+          Título <span className="text-red-500">*</span>
+        </label>
         <input
+          id="task-title"
           type="text"
           value={title}
-          onChange={onTitleChange}
-          maxLength={TITLE_MAX}             // Capa 1: límite UI
+          onChange={handleTitleChange}
+          maxLength={TITLE_MAX}
           aria-describedby="title-counter"
           className="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900"
           placeholder="Título de la tarea"
@@ -68,13 +80,16 @@ export default function TaskForm({ initialTask, onCreate, onUpdate, onCancel }) 
         </div>
       </div>
 
-      {/* Descripción */}
+      {/* Campo: Descripción */}
       <div>
-        <label className="block text-sm mb-1">Descripción</label>
+        <label htmlFor="task-desc" className="block text-sm mb-1">
+          Descripción
+        </label>
         <textarea
+          id="task-desc"
           value={description}
-          onChange={onDescChange}
-          maxLength={DESC_MAX}              // Capa 1: límite UI
+          onChange={handleDescChange}
+          maxLength={DESC_MAX}
           aria-describedby="desc-counter"
           rows={4}
           className="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900"
@@ -85,6 +100,7 @@ export default function TaskForm({ initialTask, onCreate, onUpdate, onCancel }) 
         </div>
       </div>
 
+      {/* Botones */}
       <div className="flex justify-end gap-3">
         <button
           type="button"
@@ -97,7 +113,7 @@ export default function TaskForm({ initialTask, onCreate, onUpdate, onCancel }) 
           type="submit"
           className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
         >
-          {initialTask ? "Actualizar" : "Crear"}
+          {actionLabel}
         </button>
       </div>
     </form>

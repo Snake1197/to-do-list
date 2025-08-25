@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useDarkMode } from "./hooks/useDarkMode.js";
 import { useTasks } from "./hooks/useTasks.js";
 import { useTaskFilter } from "./hooks/useTaskFilter.js";
@@ -8,7 +8,7 @@ import Header from "./components/Header.jsx";
 import TaskList from "./components/TaskList.jsx";
 import FilterButtons from "./components/FilterButtons.jsx";
 import Button from "./components/Button.jsx";
-import { Plus } from "lucide-react";
+import FloatingButton from "./components/FloatingButton.jsx";
 
 import TaskModal from "./components/TaskModal.jsx";
 import ViewModal from "./components/ViewModal.jsx";
@@ -22,6 +22,7 @@ export default function App() {
     deleteTask,
     pendingCount,
   } = useTasks();
+
   const [darkMode, setDarkMode] = useDarkMode();
   const [editing, setEditing] = useState(null);
   const [viewing, setViewing] = useState(null);
@@ -30,28 +31,27 @@ export default function App() {
 
   const filteredTasks = useTaskFilter(tasks, filter);
 
-  // 🔹 Funciones externas para claridad y buenas prácticas
-  function handleToggleTheme() {
+  const handleToggleTheme = useCallback(() => {
     setDarkMode(!darkMode);
-  }
+  }, [darkMode, setDarkMode]);
 
-  function handleAddClick() {
+  const handleAddClick = useCallback(() => {
     setShowForm(true);
-  }
+  }, []);
 
-  function handleEditTask(task) {
+  const handleEditTask = useCallback((task) => {
     setEditing(task);
     setShowForm(true);
-  }
+  }, []);
 
-  function handleCancelForm() {
+  const handleCancelForm = useCallback(() => {
     setEditing(null);
     setShowForm(false);
-  }
+  }, []);
 
-  function handleCloseView() {
+  const handleCloseView = useCallback(() => {
     setViewing(null);
-  }
+  }, []);
 
   return (
     <Layout>
@@ -66,7 +66,9 @@ export default function App() {
         <FilterButtons value={filter} onChange={setFilter} />
         <Button
           onClick={handleAddClick}
-          className="hidden md:inline-flex bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900"
+          variant="primary"
+          size="md"
+          className="hidden md:inline-flex"
         >
           Agregar tarea
         </Button>
@@ -80,14 +82,7 @@ export default function App() {
         onView={setViewing}
       />
 
-      {/* Botón flotante móvil */}
-      <button
-        onClick={handleAddClick}
-        className="md:hidden fixed bottom-6 right-6 w-14 h-14 rounded-full bg-green-600 text-white shadow-lg flex items-center justify-center text-2xl hover:bg-green-700 cursor-pointer"
-        title="Agregar tarea"
-      >
-        <Plus className="w-6 h-6" />
-      </button>
+      <FloatingButton onClick={handleAddClick} />
 
       {showForm && (
         <TaskModal

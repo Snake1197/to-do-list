@@ -2,13 +2,25 @@ import Modal from "./Modal.jsx";
 import TaskForm from "./TaskForm.jsx";
 
 export default function TaskModal({ editing, onCreate, onUpdate, onCancel }) {
+  const isEditing = Boolean(editing);
+  const modalTitle = isEditing ? "Editar tarea" : "Nueva tarea";
+  const formKey = editing?.id || "new";
+
+  const handleSubmit = (task) => {
+    if (isEditing) {
+      onUpdate(task);
+    } else {
+      onCreate(task);
+    }
+    onCancel();
+  };
+
   return (
-    <Modal title={editing ? "Editar tarea" : "Nueva tarea"} onClose={onCancel}>
+    <Modal title={modalTitle} onClose={onCancel}>
       <TaskForm
-        key={editing?.id || "new"}
+        key={formKey}
         initialTask={editing}
-        onCreate={(t) => { onCreate(t); onCancel(); }}
-        onUpdate={(t) => { onUpdate(t); onCancel(); }}
+        onSubmit={handleSubmit}
         onCancel={onCancel}
       />
     </Modal>

@@ -1,18 +1,11 @@
-
 import { useState, useMemo } from "react";
 import { Pencil, Trash2, CheckCircle, Circle } from "lucide-react";
 
-/* Util: limpia caracteres raros y normaliza espacios. */
+/* Util: limpia caracteres raros y normaliza espacios */
 function sanitizeText(str = "") {
-  const normalized = String(str)
-    .normalize("NFC") // normaliza acentos y tildes
-    .replace(/\s+/g, " ") // colapsa múltiples espacios
-    .trim();
+  const normalized = String(str).normalize("NFC").replace(/\s+/g, " ").trim();
 
-  return normalized.replace(
-    /[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ\s.,;:!?()"'_-]/g,
-    ""
-  );
+  return normalized.replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ\s.,;:!?()"'_-]/g, "");
 }
 
 export default function TaskItem({ task, onToggle, onEdit, onDelete, onView }) {
@@ -34,7 +27,7 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete, onView }) {
 
   return (
     <>
-      <li className="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow flex items-start gap-3 w-full max-w-full overflow-hidden">
+      <li className="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-md border border-gray-200 dark:border-gray-700 flex items-start gap-3 w-full max-w-full overflow-hidden">
         {/* Botón para marcar completada */}
         <button
           onClick={(e) => {
@@ -42,7 +35,9 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete, onView }) {
             onToggle();
           }}
           className="mt-1 cursor-pointer shrink-0"
-          title={task.completed ? "Marcar como pendiente" : "Marcar como completada"}
+          title={
+            task.completed ? "Marcar como pendiente" : "Marcar como completada"
+          }
           aria-pressed={task.completed}
         >
           {task.completed ? (
@@ -69,7 +64,7 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete, onView }) {
             {/* Texto */}
             <div className="grow min-w-0">
               <h3
-                className={`font-semibold w-full break-words line-clamp-1 ${
+                className={`font-semibold w-full truncate ${
                   task.completed ? "line-through opacity-60" : ""
                 }`}
                 title={safeTitle}
@@ -79,7 +74,7 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete, onView }) {
 
               {safeDesc && (
                 <p
-                  className={`text-sm text-gray-600 dark:text-gray-300 break-words line-clamp-2 ${
+                  className={`text-sm text-gray-600 dark:text-gray-300 truncate ${
                     task.completed ? "line-through opacity-60" : ""
                   }`}
                   title={safeDesc}
@@ -117,7 +112,9 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete, onView }) {
             </div>
           </div>
 
-          <p className="mt-2 text-xs text-gray-500 truncate">Creada: {createdLabel}</p>
+          <p className="mt-2 text-xs text-gray-500 truncate">
+            Creada: {createdLabel}
+          </p>
         </div>
       </li>
 
@@ -125,9 +122,12 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete, onView }) {
       {showConfirm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 w-full max-w-sm">
-            <h3 className="text-lg font-semibold mb-4">Confirmar eliminación</h3>
+            <h3 className="text-lg font-semibold mb-4">
+              Confirmar eliminación
+            </h3>
             <p className="text-sm text-gray-600 dark:text-gray-300 mb-6">
-              ¿Seguro que deseas eliminar la tarea <strong>{safeTitle}</strong>?
+              ¿Seguro que deseas eliminar esta tarea? Esta acción no se puede
+              deshacer.
             </p>
 
             <div className="flex justify-end gap-3">

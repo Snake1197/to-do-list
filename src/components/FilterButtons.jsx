@@ -1,4 +1,5 @@
 import Button from "./Button";
+import { Filter } from "lucide-react";
 
 export default function FilterButtons({ value, onChange }) {
   const filters = [
@@ -8,20 +9,26 @@ export default function FilterButtons({ value, onChange }) {
   ];
 
   return (
-    <div className="flex gap-2">
-      {filters.map((f) => (
+    <section
+      aria-label="Filtros de tareas"
+      className="flex flex-wrap items-center gap-2 mb-4"
+    >
+      <span className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-300">
+        <Filter size={16} />
+        Filtrar:
+      </span>
+
+      {filters.map(({ key, label }) => (
         <Button
-          key={f.key}
-          onClick={() => onChange(f.key)}
-          className={
-            value === f.key
-              ? "bg-green-600 text-white border border-green-600"
-              : "bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border"
-          }
+          key={key}
+          size="sm"
+          variant={value === key ? "activeFilter" : "filter"}
+          onClick={() => onChange(key)}
+          aria-pressed={value === key}
         >
-          {f.label}
+          {label}
         </Button>
       ))}
-    </div>
+    </section>
   );
 }
